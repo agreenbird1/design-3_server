@@ -15,11 +15,19 @@
   "author": "roleTang",
   "license": "ISC",
   "dependencies": {
-    "commitizen": "^4.2.4",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-multer": "^1.0.2",
     "mysql2": "^2.3.3"
+  },
+  "devDependencies": {
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
