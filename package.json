@@ -1,0 +1,25 @@
+{
+  "name": "design3_server",
+  "version": "1.0.0",
+  "description": "a node server based on the koa@2.x framework for design#3. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "commit": "cz"
+  },
+  "keywords": [
+    "node",
+    "server",
+    "koa2"
+  ],
+  "author": "roleTang",
+  "license": "ISC",
+  "dependencies": {
+    "commitizen": "^4.2.4",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-multer": "^1.0.2",
+    "mysql2": "^2.3.3"
+  }
+}
