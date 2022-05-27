@@ -28,7 +28,14 @@ const getUser = async (name) => {
   return result
 }
 
+const login = async (username, password) => {
+  const statement = `SELECT * FROM user WHERE username = ? AND password = ?;`
+  const result = await connection.execute(statement, [username, password])
+  return result
+}
+
 module.exports = {
   createUser,
-  getUser
+  getUser,
+  login
 }
