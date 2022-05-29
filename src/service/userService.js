@@ -10,10 +10,8 @@ const createUser = async (user) => {
   let { username, password, gender, mobile } = user
   // 对密码进行加密
   password = encryptByMd5(password)
-  console.log(password.length)
   const statement = `INSERT INTO user (username, password, gender, mobile) VALUES (?, ?, ?, ?);`
   const result = await connection.execute(statement, [username, password, gender, mobile])
-
   return result
 }
 
@@ -34,8 +32,22 @@ const login = async (username, password) => {
   return result
 }
 
+const getUserAvatar = async (userId) => {
+  const statement = `SELECT * FROM avatar WHERE user_id = ?;`
+  const result = await connection.execute(statement, [userId])
+  return result
+}
+
+// const updateUser = async (user) => {
+//   let { username, gender, mobile } = user
+//   const statement = `UPDATE user SET username = ?  WHERE id = ?;`
+//   const result = await connection.execute(statement, [userId])
+//   return result
+// }
+
 module.exports = {
   createUser,
   getUser,
-  login
+  login,
+  getUserAvatar
 }

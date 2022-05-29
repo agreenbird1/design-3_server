@@ -1,30 +1,33 @@
+const fs = require('fs')
 const jwt = require('jsonwebtoken')
 
 const {
   createUser: createUserSer,
   getUser: getUserSer,
-  login: loginSer
+  login: loginSer,
+  getUserAvatar: getUserAvatarSer,
+  // updateUser:updateUserSer
 } = require('../service/userService')
+const { getAvatar: getAvatarSer } = require('../service/fileService')
 const {
-  USER_ALREADY_EXIST
+  USER_ALREADY_EXIST,
+  PASSWORD_IS_INCORRECT,
+  USER_DOES_NOT_EXIST,
 } = require('../constants/errTypes')
 const encryptByMd5 = require('../utils/encryptByMd5')
-const {
-  PRIVATE_KEY
-} = require('../app/config')
+const { PRIVATE_KEY } = require('../app/config')
+const { AVATAR_PATH } = require('../constants/filePaths')
 
 const createUser = async (ctx, next) => {
   const user = ctx.request.body
   const result = await createUserSer(user)
-
   ctx.body = {
-    id: result[0].insertId
+    id: result[0].insertId,
   }
 }
 
 const isExist = async (ctx, next) => {
   const { username } = ctx.request.body
-
   const result = await getUserSer(username)
   if (result[0].length) {
     // 触发错误事件捕获
@@ -56,23 +59,44 @@ const authCheck = async (ctx, next) => {
 
 // 之前的中间件校验完成，做jwt
 const login = async (ctx) => {
-  const { id, username } = ctx.user
-  console.log(ctx.user)
+  const { id, username, gender, mobile } = ctx.user
   const token = jwt.sign({ id, username }, PRIVATE_KEY, {
     algorithm: 'RS256', // 加密算法
-    expiresIn: 60 * 60 * 24 * 7 // 过期时间
+    expiresIn: 60 * 60 * 24 * 7, // 过期时间
   })
+  let [[avRes]] = await getAvatarSer(id)
+  // 如果没有头像，则使用默认头像
+  let avatar = avRes || 'http://localhost:8000/user/0/avatar'
   // 返回数据
   ctx.body = {
     id,
     username,
-    token
+    token,
+    gender,
+    mobile,
+    avatar,
   }
 }
+
+const getUserAvatar = async (ctx) => {
+  const { userId } = ctx.params
+  const [[result]] = await getUserAvatarSer(userId)
+
+  //设置响应格式，方便展示图片内容
+  ctx.response.set('content-type', result.mimetype)
+  ctx.body = fs.createReadStream(`${AVATAR_PATH}/${result.filename}`)
+}
+
+// const updateUser = async (ctx) => {
+//   const user = ctx.request.body
+//   const result = await updateUserSer(user)
+// }
 
 module.exports = {
   createUser,
   isExist,
   authCheck,
-  login
+  login,
+  getUserAvatar,
+  // updateUser
 }
