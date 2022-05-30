@@ -6,16 +6,16 @@ const {
   authCheck,
   login,
   getUserAvatar,
-  updateUser
+  updateUser,
 } = require('../controller/userController')
 const authToken = require('../middleware/authToken')
 
 const router = new koaRouter({
-  prefix: '/user'
+  prefix: '/user',
 })
 
 router.post('/', isExist, createUser) // 创建用户
-// router.post('/update', authToken, updateUser) // 修改用户信息
+router.post('/update', authToken, updateUser) // 修改用户信息
 router.post('/login', authCheck, login) // 用户登陆
 router.get('/:userId/avatar', getUserAvatar)
 

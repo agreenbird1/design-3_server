@@ -6,7 +6,7 @@ const {
   getUser: getUserSer,
   login: loginSer,
   getUserAvatar: getUserAvatarSer,
-  // updateUser:updateUserSer
+  updateUser: updateUserSer,
 } = require('../service/userService')
 const { getAvatar: getAvatarSer } = require('../service/fileService')
 const {
@@ -66,7 +66,12 @@ const login = async (ctx) => {
   })
   let [[avRes]] = await getAvatarSer(id)
   // 如果没有头像，则使用默认头像
-  let avatar = avRes || 'http://localhost:8000/user/0/avatar'
+  let avatar
+  if (avRes) {
+    avatar = 'http://localhost:8000/user/' + id + '/avatar'
+  } else {
+    avatar = 'http://localhost:8000/user/0/avatar'
+  }
   // 返回数据
   ctx.body = {
     id,
@@ -87,10 +92,12 @@ const getUserAvatar = async (ctx) => {
   ctx.body = fs.createReadStream(`${AVATAR_PATH}/${result.filename}`)
 }
 
-// const updateUser = async (ctx) => {
-//   const user = ctx.request.body
-//   const result = await updateUserSer(user)
-// }
+const updateUser = async (ctx) => {
+  const user = ctx.request.body
+  user.id = ctx.user.id
+  const result = await updateUserSer(user)
+  ctx.body = 'ok'
+}
 
 module.exports = {
   createUser,
@@ -98,5 +105,5 @@ module.exports = {
   authCheck,
   login,
   getUserAvatar,
-  // updateUser
+  updateUser,
 }

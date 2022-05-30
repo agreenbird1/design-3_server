@@ -1,10 +1,6 @@
 const jwt = require('jsonwebtoken')
-const {
-  PUBLIC_KEY
-} = require('../app/config')
-const {
-  AUTHORIZATION_FAILED
-} = require('../constants/errTypes')
+const { PUBLIC_KEY } = require('../app/config')
+const { AUTHORIZATION_FAILED } = require('../constants/errTypes')
 
 const authToken = async (ctx, next) => {
   // 未发送token时候
@@ -17,7 +13,7 @@ const authToken = async (ctx, next) => {
   // 解密、验证token
   try {
     const user = jwt.verify(token, PUBLIC_KEY, {
-      algorithms: ['RS256']
+      algorithms: ['RS256'],
     })
     ctx.user = user
     await next()

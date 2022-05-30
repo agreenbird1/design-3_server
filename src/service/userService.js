@@ -11,7 +11,12 @@ const createUser = async (user) => {
   // 对密码进行加密
   password = encryptByMd5(password)
   const statement = `INSERT INTO user (username, password, gender, mobile) VALUES (?, ?, ?, ?);`
-  const result = await connection.execute(statement, [username, password, gender, mobile])
+  const result = await connection.execute(statement, [
+    username,
+    password,
+    gender,
+    mobile,
+  ])
   return result
 }
 
@@ -38,16 +43,17 @@ const getUserAvatar = async (userId) => {
   return result
 }
 
-// const updateUser = async (user) => {
-//   let { username, gender, mobile } = user
-//   const statement = `UPDATE user SET username = ?  WHERE id = ?;`
-//   const result = await connection.execute(statement, [userId])
-//   return result
-// }
+const updateUser = async (user) => {
+  let { username, gender, id } = user
+  const statement = `UPDATE user SET username = ? and gender = ? WHERE id = ?;`
+  const result = await connection.execute(statement, [username, gender, id])
+  return result
+}
 
 module.exports = {
   createUser,
   getUser,
   login,
-  getUserAvatar
+  getUserAvatar,
+  updateUser,
 }
