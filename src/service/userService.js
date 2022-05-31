@@ -74,6 +74,12 @@ const updateAddress = async (address) => {
   return result
 }
 
+const deleteAddress = async (id) => {
+  const statement = 'DELETE FROM address WHERE id = ?'
+  const result = await connection.execute(statement, [id])
+  return result
+}
+
 module.exports = {
   createUser,
   getUser,
@@ -82,4 +88,5 @@ module.exports = {
   updateUser,
   addAddress,
   updateAddress,
+  deleteAddress,
 }

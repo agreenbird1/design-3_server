@@ -9,6 +9,7 @@ const {
   updateUser: updateUserSer,
   addAddress: addAddressSer,
   updateAddress: updateAddressSer,
+  deleteAddress: deleteAddressSer,
 } = require('../service/userService')
 const { getAvatar: getAvatarSer } = require('../service/fileService')
 const {
@@ -123,6 +124,12 @@ const updateAddress = async (ctx) => {
   ctx.body = 'ok'
 }
 
+const deleteAddress = async (ctx) => {
+  const { id } = ctx.request.body
+  const result = await deleteAddressSer(id)
+  ctx.body = 'ok'
+}
+
 module.exports = {
   createUser,
   isExist,
@@ -132,4 +139,5 @@ module.exports = {
   updateUser,
   addAddress,
   updateAddress,
+  deleteAddress,
 }
