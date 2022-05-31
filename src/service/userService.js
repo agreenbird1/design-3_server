@@ -45,8 +45,32 @@ const getUserAvatar = async (userId) => {
 
 const updateUser = async (user) => {
   let { username, gender, id } = user
-  const statement = `UPDATE user SET username = ? and gender = ? WHERE id = ?;`
+  const statement = `UPDATE user SET username = ? , gender = ? WHERE id = ?;`
   const result = await connection.execute(statement, [username, gender, id])
+  return result
+}
+
+const addAddress = async (address) => {
+  let { user_id, mobile, receiver, value } = address
+  const statement = `INSERT INTO address (user_id, mobile, receiver, value) VALUES (?, ?, ?, ?);`
+  const result = await connection.execute(statement, [
+    user_id,
+    mobile,
+    receiver,
+    value,
+  ])
+  return result
+}
+
+const updateAddress = async (address) => {
+  let { id, mobile, receiver, value } = address
+  const statement = `UPDATE address SET mobile = ? , receiver = ? , value = ? WHERE id = ?;`
+  const result = await connection.execute(statement, [
+    mobile,
+    receiver,
+    value,
+    id,
+  ])
   return result
 }
 
@@ -56,4 +80,6 @@ module.exports = {
   login,
   getUserAvatar,
   updateUser,
+  addAddress,
+  updateAddress,
 }

@@ -7,6 +7,8 @@ const {
   login: loginSer,
   getUserAvatar: getUserAvatarSer,
   updateUser: updateUserSer,
+  addAddress: addAddressSer,
+  updateAddress: updateAddressSer,
 } = require('../service/userService')
 const { getAvatar: getAvatarSer } = require('../service/fileService')
 const {
@@ -99,6 +101,28 @@ const updateUser = async (ctx) => {
   ctx.body = 'ok'
 }
 
+const addAddress = async (ctx) => {
+  const address = ctx.request.body
+  const result = await addAddressSer({
+    user_id: ctx.user.id,
+    mobile: address.mobile,
+    receiver: address.receiver,
+    value: address.value + '|' + address.detailAddress,
+  })
+  ctx.body = 'ok'
+}
+
+const updateAddress = async (ctx) => {
+  const address = ctx.request.body
+  const result = await updateAddressSer({
+    id: address.id,
+    mobile: address.mobile,
+    receiver: address.receiver,
+    value: address.value + '|' + address.detailAddress,
+  })
+  ctx.body = 'ok'
+}
+
 module.exports = {
   createUser,
   isExist,
@@ -106,4 +130,6 @@ module.exports = {
   login,
   getUserAvatar,
   updateUser,
+  addAddress,
+  updateAddress,
 }
