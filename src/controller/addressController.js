@@ -2,6 +2,7 @@ const {
   addAddress: addAddressSer,
   updateAddress: updateAddressSer,
   deleteAddress: deleteAddressSer,
+  getAddress: getAddressSer,
 } = require('../service/addressService')
 
 const addAddress = async (ctx) => {
@@ -11,17 +12,20 @@ const addAddress = async (ctx) => {
     mobile: address.mobile,
     receiver: address.receiver,
     value: address.value + '|' + address.detailAddress,
+    isDefault: address.isDefault,
   })
-  ctx.body = 'ok'
+  ctx.body = result[0].insertId
 }
 
 const updateAddress = async (ctx) => {
   const address = ctx.request.body
   const result = await updateAddressSer({
+    user_id: ctx.user.id,
     id: address.id,
     mobile: address.mobile,
     receiver: address.receiver,
     value: address.value + '|' + address.detailAddress,
+    isDefault: address.isDefault,
   })
   ctx.body = 'ok'
 }
@@ -32,8 +36,16 @@ const deleteAddress = async (ctx) => {
   ctx.body = 'ok'
 }
 
+const getAddress = async (ctx) => {
+  const { id } = ctx.user
+  const result = await getAddressSer(id)
+
+  ctx.body = result[0]
+}
+
 module.exports = {
   addAddress,
   updateAddress,
   deleteAddress,
+  getAddress,
 }

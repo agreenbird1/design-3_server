@@ -10,7 +10,6 @@ const { APP_DEV } = require('../app/config')
 
 const saveAvatar = async (ctx) => {
   const { filename, mimetype, size } = ctx.req.file
-  console.log(ctx.req.file)
   const { id } = ctx.user
   // 首先查看该用户是否已经有了头像
   const avatar = await getAvatarSer(id)
