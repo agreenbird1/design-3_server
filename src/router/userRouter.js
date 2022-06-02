@@ -18,7 +18,7 @@ const router = new koaRouter({
 })
 
 router.post('/', isExist, createUser) // 创建用户
-router.post('/update', authToken, updateUser) // 修改用户信息
+router.post('/update', authToken, isExist, updateUser) // 修改用户信息
 router.post('/login', authCheck, login) // 用户登陆
 
 router.get('/:userId/avatar', getUserAvatar)

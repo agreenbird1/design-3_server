@@ -4,7 +4,8 @@ const {
   PASSWORD_IS_INCORRECT,
   USER_DOES_NOT_EXIST,
   USER_ALREADY_EXIST,
-  UNAUTHORIZED
+  UNAUTHORIZED,
+  ADMIN_DOES_NOT_EXIST,
 } = require('../constants/errTypes')
 
 const errHandler = (error, ctx) => {
@@ -20,6 +21,10 @@ const errHandler = (error, ctx) => {
       break
     case USER_DOES_NOT_EXIST:
       message = '用户不存在'
+      status = 400
+      break
+    case ADMIN_DOES_NOT_EXIST:
+      message = '管理员不存在'
       status = 400
       break
     case USER_ALREADY_EXIST:

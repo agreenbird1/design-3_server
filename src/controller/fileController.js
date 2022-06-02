@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+
 const {
   saveAvatar: saveAvatarSer,
   getAvatar: getAvatarSer,
@@ -15,6 +18,9 @@ const saveAvatar = async (ctx) => {
   const avatar = await getAvatarSer(id)
   // // 如果有，先删除
   if (avatar[0].length) {
+    fs.unlinkSync(
+      path.join(__dirname, '../../uploads/avatar/' + avatar[0][0].filename)
+    )
     await deleteAvatarSer(id)
   }
   const result = await saveAvatarSer(filename, mimetype, size, id)
