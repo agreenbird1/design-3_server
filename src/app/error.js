@@ -6,6 +6,7 @@ const {
   USER_ALREADY_EXIST,
   UNAUTHORIZED,
   ADMIN_DOES_NOT_EXIST,
+  CATEGORY_IS_ALREADY_EXIST
 } = require('../constants/errTypes')
 
 const errHandler = (error, ctx) => {
@@ -34,6 +35,10 @@ const errHandler = (error, ctx) => {
     case UNAUTHORIZED:
       message = '您没有权限~'
       status = 401
+      break
+    case CATEGORY_IS_ALREADY_EXIST:
+      message = '分类已经存在！'
+      status = 400
       break
     default:
       message = 'NOT FOUND'

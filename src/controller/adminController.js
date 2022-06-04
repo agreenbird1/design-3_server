@@ -2,10 +2,15 @@ const jwt = require('jsonwebtoken')
 const {
   getAdminByName,
   getAdminByPassword,
+  addCategory: addCategorySer,
+  deleteCategory: deleteCategorySer,
+  patchCategory:patchCategorySer,
+  categoryExist,
 } = require('../service/adminService')
 const {
   ADMIN_DOES_NOT_EXIST,
   PASSWORD_IS_INCORRECT,
+  CATEGORY_IS_ALREADY_EXIST
 } = require('../constants/errTypes')
 
 const { PRIVATE_KEY } = require('../app/config')
@@ -39,7 +44,39 @@ const login = async (ctx) => {
   }
 }
 
+const addCategory = async (ctx) => {
+  let category = ctx.request.body
+  // 添加分类！分类必须不存在才可添加
+  const isExist = await categoryExist(category)
+  if (isExist.length) {
+    return ctx.app.emit('error', new Error(CATEGORY_IS_ALREADY_EXIST), ctx)
+  }
+  const result = await addCategorySer(category)
+  ctx.body = 'ok'
+}
+
+const deleteCategory = async (ctx) => {
+  let { id } = ctx.request.body
+  console.log(id)
+  const result = await deleteCategorySer(id)
+  ctx.body = 'ok'
+}
+
+const patchCategory = async (ctx) => {
+  let category = ctx.request.body
+  // 修改分类！分类必须不存在才可添加
+  const isExist = await categoryExist(category)
+  if (isExist.length) {
+    return ctx.app.emit('error', new Error(CATEGORY_IS_ALREADY_EXIST), ctx)
+  }
+  const result = await patchCategorySer(category)
+  ctx.body = 'ok'
+}
+
 module.exports = {
   adminCheck,
   login,
+  addCategory,
+  deleteCategory,
+  patchCategory
 }
