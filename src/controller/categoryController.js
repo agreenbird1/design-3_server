@@ -13,13 +13,13 @@ const {
 
 const addCategory = async (ctx) => {
   let category = ctx.request.body
-  // 添加分类！分类必须不存在才可添加
+    // 添加分类！分类必须不存在才可添加
   const isExist = await categoryExist(category)
   if (isExist.length) {
     return ctx.app.emit('error', new Error(CATEGORY_IS_ALREADY_EXIST), ctx)
   }
   const result = await addCategorySer(category)
-  ctx.body = 'ok'
+  ctx.body = result[0].insertId
 }
 
 const deleteCategory = async (ctx) => {
@@ -31,10 +31,6 @@ const deleteCategory = async (ctx) => {
 const patchCategory = async (ctx) => {
   let category = ctx.request.body
   // 修改分类！分类必须不存在才可添加
-  const isExist = await categoryExist(category)
-  if (isExist.length) {
-    return ctx.app.emit('error', new Error(CATEGORY_IS_ALREADY_EXIST), ctx)
-  }
   const result = await patchCategorySer(category)
   ctx.body = 'ok'
 }

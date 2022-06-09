@@ -7,8 +7,11 @@ require('./database')
 
 
 const app = new koa()
+const cors = require('koa2-cors')
+
 app.useRoutes = useRoutes
 app.use(bodyParser())
+app.use(cors())
 app.useRoutes()
 
 // 错误处理

@@ -1,7 +1,6 @@
 const connection = require('../app/database')
 
 const addAddress = async (address) => {
-  console.log(address)
   let { user_id, mobile, receiver, value, isDefault } = address
   const statement = `INSERT INTO address (user_id, mobile, receiver, value, isDefault) VALUES (?, ?, ?, ?, ?);`
   if (isDefault === '1') {

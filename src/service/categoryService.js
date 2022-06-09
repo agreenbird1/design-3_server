@@ -32,7 +32,11 @@ const patchCategory = async (category) => {
 }
 
 const getCategory = async () => {
-  const statement = 'SELECT * FROM category;'
+
+  const statement = `
+    SELECT c.id, c.name, c.value, (SELECT COUNT(*) FROM product WHERE c.id = product.category_id) total
+    FROM category c;
+  `
   const result = await connection.execute(statement)
   return result[0]
 }

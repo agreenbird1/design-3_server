@@ -18,9 +18,18 @@ const deleteAvatar = async (userId) => {
   return result
 }
 
+const storeProductPic = (product_id, pics) => {
+  const statement = `INSERT INTO picture(filename, mimetype, product_id) VALUES(?, ?, ?);`
+  pics.forEach(async (pic) => {
+    const { filename, mimetype } = pic
+    await connection.execute(statement, [filename, mimetype, product_id])
+  })
+}
+
 module.exports = {
   saveAvatar,
   getAvatar,
-  deleteAvatar
+  deleteAvatar,
+  storeProductPic
 }
 
