@@ -9,6 +9,29 @@ const addProduct = async (product) => {
   return result[0]
 }
 
+const getProduct = async () => {
+  const statement = `
+    SELECT p.*, GROUP_CONCAT(pi.filename) pics
+    from product p
+    join picture pi
+    on p.id = pi.product_id
+    GROUP BY
+    p.id
+  `
+  const products = await connection.execute(statement)
+  return products[0]
+}
+
+const getPicture = async (filename) => {
+  const statement = `
+    SELECT * from picture where filename = ?;
+  `
+  const products = await connection.execute(statement, [filename])
+  return products[0][0]
+}
+
 module.exports = {
-  addProduct
+  addProduct,
+  getProduct,
+  getPicture
 }

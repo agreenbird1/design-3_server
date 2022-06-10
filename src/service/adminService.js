@@ -46,9 +46,7 @@ const patchCategory = async (category) => {
 
 const getCategory = async () => {
   const statement = 'SELECT * FROM category;'
-  console.log(statement)
   const result = await connection.execute(statement)
-  console.log(result)
   return result[0]
 }
 
