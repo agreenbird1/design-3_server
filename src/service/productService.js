@@ -22,6 +22,22 @@ const getProduct = async () => {
   return products[0]
 }
 
+const getProductByCategory = async (category_id) => {
+  const statement = `
+    SELECT p.*, GROUP_CONCAT(pi.filename) pics
+    from product p
+    join picture pi
+    on p.id = pi.product_id
+    WHERE p.category_id = ?
+    GROUP BY
+    p.id
+  `
+  console.log('1')
+  const products = await connection.execute(statement, [category_id])
+  console.log(products)
+  return products[0]
+}
+
 const getPicture = async (filename) => {
   const statement = `
     SELECT * from picture where filename = ?;
@@ -30,8 +46,25 @@ const getPicture = async (filename) => {
   return products[0][0]
 }
 
+const deleteProduct = async (id) => {
+  const statement = 'DELETE FROM product WHERE id = ?'
+  const result = await connection.execute(statement, [id])
+  return result
+}
+
+const patchProduct = async (id, put) => {
+  if (put === '1') put = '0'
+  else put = '1'
+  const statement = `UPDATE product SET put = ? WHERE id = ?;`
+  const result = await connection.execute(statement, [put, id])
+  return result
+}
+
 module.exports = {
   addProduct,
   getProduct,
-  getPicture
+  getPicture,
+  deleteProduct,
+  patchProduct,
+  getProductByCategory
 }

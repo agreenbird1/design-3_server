@@ -7,9 +7,8 @@ const {
   login: loginSer,
   getUserAvatar: getUserAvatarSer,
   updateUser: updateUserSer,
-  addAddress: addAddressSer,
-  updateAddress: updateAddressSer,
-  deleteAddress: deleteAddressSer,
+  getUsers: getUsersSer,
+  forbidUser:forbidUserSer
 } = require('../service/userService')
 const { getAvatar: getAvatarSer } = require('../service/fileService')
 const {
@@ -102,31 +101,14 @@ const updateUser = async (ctx) => {
   ctx.body = 'ok'
 }
 
-const addAddress = async (ctx) => {
-  const address = ctx.request.body
-  const result = await addAddressSer({
-    user_id: ctx.user.id,
-    mobile: address.mobile,
-    receiver: address.receiver,
-    value: address.value + '|' + address.detailAddress,
-  })
-  ctx.body = 'ok'
+const getUsers = async (ctx) => {
+  const users = await getUsersSer()
+  ctx.body = users
 }
 
-const updateAddress = async (ctx) => {
-  const address = ctx.request.body
-  const result = await updateAddressSer({
-    id: address.id,
-    mobile: address.mobile,
-    receiver: address.receiver,
-    value: address.value + '|' + address.detailAddress,
-  })
-  ctx.body = 'ok'
-}
-
-const deleteAddress = async (ctx) => {
-  const { id } = ctx.request.body
-  const result = await deleteAddressSer(id)
+const forbidUser = async (ctx) => {
+  const users = ctx.request.body
+  await forbidUserSer(users)
   ctx.body = 'ok'
 }
 
@@ -137,7 +119,6 @@ module.exports = {
   login,
   getUserAvatar,
   updateUser,
-  addAddress,
-  updateAddress,
-  deleteAddress,
+  getUsers,
+  forbidUser
 }

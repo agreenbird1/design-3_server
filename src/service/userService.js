@@ -50,34 +50,19 @@ const updateUser = async (user) => {
   return result
 }
 
-const addAddress = async (address) => {
-  let { user_id, mobile, receiver, value } = address
-  const statement = `INSERT INTO address (user_id, mobile, receiver, value) VALUES (?, ?, ?, ?);`
-  const result = await connection.execute(statement, [
-    user_id,
-    mobile,
-    receiver,
-    value,
-  ])
-  return result
+const getUsers = async () => {
+  const statement = `SELECT id, username, mobile, createAt, disabled FROM user;`
+  const result = await connection.execute(statement)
+  return result[0]
 }
 
-const updateAddress = async (address) => {
-  let { id, mobile, receiver, value } = address
-  const statement = `UPDATE address SET mobile = ? , receiver = ? , value = ? WHERE id = ?;`
-  const result = await connection.execute(statement, [
-    mobile,
-    receiver,
-    value,
-    id,
-  ])
-  return result
-}
-
-const deleteAddress = async (id) => {
-  const statement = 'DELETE FROM address WHERE id = ?'
-  const result = await connection.execute(statement, [id])
-  return result
+const forbidUser = (users) => {
+  const statement = `UPDATE user SET disabled = ? WHERE id = ?;`
+  users.forEach(async user => {
+    console.log(user)
+    let { id, disabled } = user
+    await connection.execute(statement, [disabled, id])
+  })
 }
 
 module.exports = {
@@ -86,7 +71,6 @@ module.exports = {
   login,
   getUserAvatar,
   updateUser,
-  addAddress,
-  updateAddress,
-  deleteAddress,
+  getUsers,
+  forbidUser
 }
