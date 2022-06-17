@@ -32,9 +32,7 @@ const getProductByCategory = async (category_id) => {
     GROUP BY
     p.id
   `
-  console.log('1')
   const products = await connection.execute(statement, [category_id])
-  console.log(products)
   return products[0]
 }
 
@@ -60,11 +58,41 @@ const patchProduct = async (id, put) => {
   return result
 }
 
+const getProductByKeyWords = async (keywords) => {
+  const statement = `SELECT * from product where name like '%${keywords}%';`
+  const products = await connection.execute(statement, [keywords])
+  return products[0]
+}
+
+const getProductBySubCategory = async (subcategory) => {
+  const idStatement = `SELECT id FROM category WHERE name = ?`
+  const [[{ id }]] = await connection.execute(idStatement, [subcategory])
+  const products = await getProductByCategory(id)
+  return products
+}
+
+const getProductById = async (id) => {
+  const statement = `
+    SELECT p.*, GROUP_CONCAT(pi.filename) pics
+    from product p
+    join picture pi
+    on p.id = pi.product_id
+    WHERE p.id = ?
+    GROUP BY
+    p.id
+  `
+  const [[product]] = await connection.execute(statement, [id])
+  return product
+}
+
 module.exports = {
   addProduct,
   getProduct,
   getPicture,
   deleteProduct,
   patchProduct,
-  getProductByCategory
+  getProductByCategory,
+  getProductByKeyWords,
+  getProductBySubCategory,
+  getProductById
 }

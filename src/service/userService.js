@@ -59,7 +59,6 @@ const getUsers = async () => {
 const forbidUser = (users) => {
   const statement = `UPDATE user SET disabled = ? WHERE id = ?;`
   users.forEach(async user => {
-    console.log(user)
     let { id, disabled } = user
     await connection.execute(statement, [disabled, id])
   })

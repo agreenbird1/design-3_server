@@ -58,7 +58,6 @@ const addCategory = async (ctx) => {
 
 const deleteCategory = async (ctx) => {
   let { id } = ctx.request.body
-  console.log(id)
   const result = await deleteCategorySer(id)
   ctx.body = 'ok'
 }

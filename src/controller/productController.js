@@ -6,10 +6,15 @@ const {
   getPicture: getPictureSer,
   deleteProduct: deleteProductSer,
   patchProduct: patchProductSer,
-  getProductByCategory: getProductByCategorySer
+  getProductByCategory: getProductByCategorySer,
+  getProductByKeyWords: getProductByKeyWordsSer,
+  getProductBySubCategory: getProductBySubCategorySer,
+  getProductById: getProductByIdSer
 } = require('../service/productService')
 const { APP_DEV } = require('../app/config')
 const { PRODUCT_PATH } = require('../constants/filePaths')
+const { request } = require('http')
+
 
 const addProduct = async (ctx) => {
   const product = ctx.request.body
@@ -58,11 +63,45 @@ const deleteProduct = async (ctx) => {
   ctx.body = 'ok'
 }
 
+const getProductByKeyWords = async (ctx) => {
+  // get 请求在 query 中
+  let keywords = ctx.request.query.keywords
+  const res = await getProductByKeyWordsSer(keywords)
+  ctx.body = res
+}
+
+const getProductBySubCategory = async (ctx) => {
+  // get 请求在 query 中
+  let subcategory = ctx.request.query.subcategory
+  const products = await getProductBySubCategorySer(subcategory)
+  console.log(products)
+  products.forEach(product => {
+    product.pics = product.pics.split(',')
+    product.pics.forEach((pic, idx) => {
+      product.pics[idx] = `${APP_DEV}/product/${pic}`
+    })
+  })
+  ctx.body = products
+}
+
+const getProductById = async (ctx) => {
+  const id = ctx.request.query.id
+  const product = await getProductByIdSer(id)
+  product.pics = product.pics.split(',')
+  product.pics.forEach((pic, idx) => {
+    product.pics[idx] = `${APP_DEV}/product/${pic}`
+  })
+  ctx.body = product
+}
+
 module.exports = {
   addProduct,
   getProduct,
   getPicture,
   patchProduct,
   deleteProduct,
-  getProductByCategory
+  getProductByCategory,
+  getProductByKeyWords,
+  getProductBySubCategory,
+  getProductById
 }
