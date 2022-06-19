@@ -75,7 +75,6 @@ const getProductBySubCategory = async (ctx) => {
   // get 请求在 query 中
   let subcategory = ctx.request.query.subcategory
   const products = await getProductBySubCategorySer(subcategory)
-  console.log(products)
   products.forEach(product => {
     product.pics = product.pics.split(',')
     product.pics.forEach((pic, idx) => {
