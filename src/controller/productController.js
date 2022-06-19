@@ -9,7 +9,8 @@ const {
   getProductByCategory: getProductByCategorySer,
   getProductByKeyWords: getProductByKeyWordsSer,
   getProductBySubCategory: getProductBySubCategorySer,
-  getProductById: getProductByIdSer
+  getProductById: getProductByIdSer,
+  getCollection: getCollectionSer
 } = require('../service/productService')
 const { APP_DEV } = require('../app/config')
 const { PRODUCT_PATH } = require('../constants/filePaths')
@@ -103,5 +104,5 @@ module.exports = {
   getProductByCategory,
   getProductByKeyWords,
   getProductBySubCategory,
-  getProductById
+  getProductById,
 }

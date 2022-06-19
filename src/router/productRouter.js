@@ -18,14 +18,14 @@ const router = new koaRouter({
   prefix: '/product',
 })
 
-router.get("/apro", authToken, getProductById)
+router.get("/apro", getProductById)
 router.post("/", adminToken, addProduct)
 router.patch("/", adminToken, patchProduct)
 router.delete("/", adminToken, deleteProduct)
-router.get("/", adminToken, getProduct)
-router.get("/associate", authToken, getProductByKeyWords)
-router.get("/category/:category_id", adminToken, getProductByCategory)
-router.get("/subcategory", authToken, getProductBySubCategory)
+router.get("/", getProduct)
+router.get("/associate", getProductByKeyWords)
+router.get("/category/:category_id", getProductByCategory)
+router.get("/subcategory", getProductBySubCategory)
 router.get("/:filename", getPicture)
 
 module.exports = router
