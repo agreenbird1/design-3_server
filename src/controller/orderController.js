@@ -3,7 +3,8 @@ const {
   addOrder: addOrderSer,
   getOrder: getOrderSer,
   patchOrder: patchOrderSer,
-  deleteOrder: deleteOrderSer
+  deleteOrder: deleteOrderSer,
+  getAllOrder: getAllOrderSer
 } = require('../service/orderService')
 
 const addOrder = async (ctx) => {
@@ -16,7 +17,13 @@ const addOrder = async (ctx) => {
 
 const getOrder = async (ctx) => {
   const { order_id } = ctx.request.query
-  const order = await getOrderSer(order_id)
+  const user_id = ctx.user.id
+  let order
+  if (order_id) {
+    order = await getOrderSer(order_id)
+  } else {
+    order = await getAllOrderSer(user_id)
+  }
   ctx.body = order
 }
 

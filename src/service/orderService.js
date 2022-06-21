@@ -38,6 +38,16 @@ const getOrder = async (order_id) => {
   return order
 }
 
+const getAllOrder = async (user_id) => {
+  const statement = 'SELECT * FROM `order` WHERE user_id = ?'
+  const [res] = await connection.execute(statement, [user_id])
+  const orders = []
+  for (let i = 0; i < res.length; i++) {
+    orders.push(await getOrder(res[i].id))
+  }
+  return orders
+}
+
 const patchOrder = (order_id, address_id) => {
   const statement = 'UPDATE `order` SET address_id = ? , state = 1 where id = ?'
   connection.execute(statement, [address_id, order_id])
@@ -51,5 +61,6 @@ const deleteOrder = async (order_id) => {
 module.exports = {
   addOrder,
   getOrder,
-  patchOrder
+  patchOrder,
+  getAllOrder
 }
