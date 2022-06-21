@@ -7,7 +7,14 @@ const {
 
 const getCollection = async (ctx) => {
   const { id } = ctx.user
-  ctx.body = await getCollectionSer(id)
+  const products = await getCollectionSer(id)
+  products.forEach(product => {
+    product.pics = product.pics.split(',')
+    product.pics.forEach((pic, idx) => {
+      product.pics[idx] = `${APP_DEV}/product/${pic}`
+    })
+  })
+  ctx.body = products
 }
 
 const deleteCollection = async (ctx) => {
