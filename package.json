@@ -15,6 +15,7 @@
   "author": "roleTang",
   "license": "ISC",
   "dependencies": {
+    "dayjs": "^1.11.3",
     "dotenv": "^16.0.1",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
