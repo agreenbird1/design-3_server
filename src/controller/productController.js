@@ -10,7 +10,8 @@ const {
   getProductByKeyWords: getProductByKeyWordsSer,
   getProductBySubCategory: getProductBySubCategorySer,
   getProductById: getProductByIdSer,
-  getCollection: getCollectionSer
+  getCollection: getCollectionSer,
+  getProductByCollect: getProductByCollectSer
 } = require('../service/productService')
 const { APP_DEV } = require('../app/config')
 const { PRODUCT_PATH } = require('../constants/filePaths')
@@ -94,6 +95,17 @@ const getProductById = async (ctx) => {
   ctx.body = product
 }
 
+const getProductByCollect = async (ctx) => {
+  const products = await getProductByCollectSer()
+  products.forEach(product => {
+    product.pics = product.pics.split(',')
+    product.pics.forEach((pic, idx) => {
+      product.pics[idx] = `${APP_DEV}/product/${pic}`
+    })
+  })
+  ctx.body = products
+}
+
 module.exports = {
   addProduct,
   getProduct,
@@ -104,4 +116,5 @@ module.exports = {
   getProductByKeyWords,
   getProductBySubCategory,
   getProductById,
+  getProductByCollect
 }

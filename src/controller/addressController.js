@@ -38,6 +38,7 @@ const deleteAddress = async (ctx) => {
 
 const getAddress = async (ctx) => {
   const { id } = ctx.user
+  console.log(id)
   const result = await getAddressSer(id)
 
   ctx.body = result[0]

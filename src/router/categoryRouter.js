@@ -15,6 +15,6 @@ const router = new koaRouter({
 router.post('/', adminToken, addCategory)
 router.delete('/', adminToken, deleteCategory)
 router.patch('/', adminToken, patchCategory)
-router.get('/', adminToken, getCategory)
+router.get('/', getCategory)
 
 module.exports = router

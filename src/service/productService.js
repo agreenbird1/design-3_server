@@ -85,6 +85,22 @@ const getProductById = async (id) => {
   return product
 }
 
+const  getProductByCollect = async ()=>{
+  const statement = `
+    SELECT t.*, GROUP_CONCAT(p.filename) pics
+    from (SELECT p.*, count(*) num from product p
+    join collection c
+    on p.id = c.product_id
+    GROUP BY c.product_id) t
+    join picture p
+    on t.id = p.product_id
+    GROUP BY t.id
+    ORDER BY num desc
+  `
+  const [products] = await connection.execute(statement)
+  return products
+}
+
 module.exports = {
   addProduct,
   getProduct,
@@ -94,5 +110,6 @@ module.exports = {
   getProductByCategory,
   getProductByKeyWords,
   getProductBySubCategory,
-  getProductById
+  getProductById,
+  getProductByCollect
 }

@@ -11,7 +11,8 @@ const {
   getProductByCategory,
   getProductByKeyWords,
   getProductBySubCategory,
-  getProductById
+  getProductById,
+  getProductByCollect
 } = require('../controller/productController')
 
 const router = new koaRouter({
@@ -19,13 +20,15 @@ const router = new koaRouter({
 })
 
 router.get("/apro", getProductById)
-router.post("/", adminToken, addProduct)
-router.patch("/", adminToken, patchProduct)
-router.delete("/", adminToken, deleteProduct)
+router.get("/recommend", getProductByCollect)
 router.get("/", getProduct)
 router.get("/associate", getProductByKeyWords)
 router.get("/category/:category_id", getProductByCategory)
 router.get("/subcategory", getProductBySubCategory)
 router.get("/:filename", getPicture)
+router.post("/", adminToken, addProduct)
+router.patch("/", adminToken, patchProduct)
+router.delete("/", adminToken, deleteProduct)
+
 
 module.exports = router
