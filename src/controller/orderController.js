@@ -4,6 +4,7 @@ const {
   getOrder: getOrderSer,
   patchOrder: patchOrderSer,
   deleteOrder: deleteOrderSer,
+  getAllUserOrder: getAllUserOrderSer,
   getAllOrder: getAllOrderSer
 } = require('../service/orderService')
 
@@ -22,7 +23,7 @@ const getOrder = async (ctx) => {
   if (order_id) {
     order = await getOrderSer(order_id)
   } else {
-    order = await getAllOrderSer(user_id)
+    order = await getAllUserOrderSer(user_id)
   }
   ctx.body = order
 }
@@ -40,9 +41,15 @@ const deleteOrder = async (ctx) => {
   ctx.body = 'ok'
 }
 
+const getAllOrder = async (ctx) => {
+  const orders = await getAllOrderSer()
+  ctx.body = orders
+}
+
 module.exports = {
   addOrder,
   getOrder,
   patchOrder,
-  deleteOrder
+  deleteOrder,
+  getAllOrder
 }

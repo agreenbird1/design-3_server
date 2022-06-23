@@ -59,7 +59,15 @@ const patchProduct = async (id, put) => {
 }
 
 const getProductByKeyWords = async (keywords) => {
-  const statement = `SELECT * from product where name like '%${keywords}%';`
+  const statement = `
+    SELECT p.*, GROUP_CONCAT(pi.filename) pics
+    from product p
+    join picture pi
+    on p.id = pi.product_id
+    WHERE p.name like '%${keywords}%'
+    GROUP BY
+    p.id
+  `
   const products = await connection.execute(statement, [keywords])
   return products[0]
 }

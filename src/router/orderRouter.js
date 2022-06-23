@@ -5,7 +5,9 @@ const {
   addOrder,
   getOrder,
   patchOrder,
-  deleteOrder } = require('../controller/orderController')
+  deleteOrder,
+  getAllOrder
+} = require('../controller/orderController')
 
 const router = new koaRouter({
   prefix: '/order',
@@ -14,6 +16,7 @@ const router = new koaRouter({
 
 router.post("/", authToken, addOrder)
 router.get("/", authToken, getOrder)
+router.get("/all", adminToken, getAllOrder)
 router.patch("/", authToken, patchOrder)
 router.delete("/", adminToken, deleteOrder)
 

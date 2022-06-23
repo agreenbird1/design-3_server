@@ -38,7 +38,13 @@ const getOrder = async (order_id) => {
   return order
 }
 
-const getAllOrder = async (user_id) => {
+const getAllOrder = async () => {
+  const statement = 'SELECT * FROM `order`;'
+  const [res] = await connection.execute(statement)
+  return res
+}
+
+const getAllUserOrder = async (user_id) => {
   const statement = 'SELECT * FROM `order` WHERE user_id = ?'
   const [res] = await connection.execute(statement, [user_id])
   const orders = []
@@ -54,7 +60,7 @@ const patchOrder = (order_id, address_id) => {
 }
 
 const deleteOrder = async (order_id) => {
-  const statement = 'DELETE FROM order WHERE id = ?'
+  const statement = 'DELETE FROM `order` WHERE id = ?'
   await connection.execute(statement, [order_id])
 }
 
@@ -62,5 +68,7 @@ module.exports = {
   addOrder,
   getOrder,
   patchOrder,
-  getAllOrder
+  getAllOrder,
+  getAllUserOrder,
+  deleteOrder,
 }

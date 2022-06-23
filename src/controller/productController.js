@@ -68,8 +68,14 @@ const deleteProduct = async (ctx) => {
 const getProductByKeyWords = async (ctx) => {
   // get 请求在 query 中
   let keywords = ctx.request.query.keywords
-  const res = await getProductByKeyWordsSer(keywords)
-  ctx.body = res
+  const products = await getProductByKeyWordsSer(keywords)
+  products.forEach(product => {
+    product.pics = product.pics.split(',')
+    product.pics.forEach((pic, idx) => {
+      product.pics[idx] = `${APP_DEV}/product/${pic}`
+    })
+  })
+  ctx.body = products
 }
 
 const getProductBySubCategory = async (ctx) => {
