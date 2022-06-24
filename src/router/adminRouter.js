@@ -6,7 +6,9 @@ const {
   addCategory,
   deleteCategory,
   patchCategory,
-  getCategory
+  getCategory,
+  getAllAdmin,
+  patchAdmin
 } = require('../controller/adminController')
 const adminToken = require('../middleware/adminToken')
 
@@ -18,6 +20,8 @@ router.post('/login', adminCheck, login)
 router.post('/category', adminToken, addCategory)
 router.delete('/category', adminToken, deleteCategory)
 router.patch('/category', adminToken, patchCategory)
+router.patch('/', adminToken, patchAdmin)
 router.get('/category', adminToken, getCategory)
+router.get('/', adminToken, getAllAdmin)
 
 module.exports = router

@@ -50,6 +50,22 @@ const getCategory = async () => {
   return result[0]
 }
 
+const getAllAdmin = async () => {
+  const statement = 'SELECT * FROM `admin`;'
+  const result = await connection.execute(statement)
+  return result[0]
+}
+
+const patchAdmin = async (id, forbidden) => {
+  console.log(id)
+  console.log(forbidden)
+  const statement = 'UPDATE `admin` SET forbidden = ?  WHERE id = ?;'
+  const result = await connection.execute(statement, [
+    forbidden, id
+  ])
+  return result
+}
+
 module.exports = {
   getAdminByName,
   getAdminByPassword,
@@ -57,5 +73,7 @@ module.exports = {
   categoryExist,
   deleteCategory,
   patchCategory,
-  getCategory
+  getCategory,
+  getAllAdmin,
+  patchAdmin
 }

@@ -6,6 +6,8 @@ const {
   deleteCategory: deleteCategorySer,
   patchCategory: patchCategorySer,
   getCategory: getCategorySer,
+  getAllAdmin: getAllAdminSer,
+  patchAdmin: patchAdminSer,
   categoryExist,
 } = require('../service/adminService')
 const {
@@ -31,7 +33,7 @@ const adminCheck = async (ctx, next) => {
 }
 
 const login = async (ctx) => {
-  const { id, type, name, password } = ctx.admin
+  const { id, type, name, password, forbidden } = ctx.admin
   const token = jwt.sign({ id, type, name }, PRIVATE_KEY, {
     algorithm: 'RS256', // 加密算法
     expiresIn: 60 * 60 * 24 * 7, // 过期时间
@@ -42,6 +44,7 @@ const login = async (ctx) => {
     type,
     name,
     token,
+    forbidden
   }
 }
 
@@ -78,11 +81,25 @@ const getCategory = async (ctx) => {
   ctx.body = result
 }
 
+const getAllAdmin = async (ctx) => {
+  const admins = await getAllAdminSer()
+  ctx.body = admins
+}
+
+const patchAdmin = async (ctx) => {
+  let { id, forbidden } = ctx.request.body
+  forbidden = forbidden === "0" ? "1" : "0"
+  await patchAdminSer(id, forbidden)
+  ctx.body = 'ok'
+}
+
 module.exports = {
   adminCheck,
   login,
   addCategory,
   deleteCategory,
   patchCategory,
-  getCategory
+  getCategory,
+  getAllAdmin,
+  patchAdmin
 }
